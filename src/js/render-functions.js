@@ -8,6 +8,7 @@ let imageGallery = new SimpleLightbox('.gallery-item a', {
 
 const gallery = document.querySelector('.gallery');
 const loader = document.querySelector('.loader');
+export const btnMore = document.querySelector('.btn-more');
 
 export function createGallery(images) {
   const markup = images
@@ -47,7 +48,7 @@ export function createGallery(images) {
     )
     .join('');
 
-  gallery.innerHTML = markup;
+  gallery.insertAdjacentHTML('beforeend', markup);
 
   imageGallery.refresh();
 }
@@ -62,4 +63,12 @@ export function showLoader() {
 
 export function hideLoader() {
   loader.classList.remove('show');
+}
+
+export function showLoadMoreButton() {
+  btnMore.classList.add('show-btn-more');
+}
+
+export function hideLoadMoreButton() {
+  btnMore.classList.remove('show-btn-more');
 }
