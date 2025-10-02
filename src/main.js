@@ -17,6 +17,7 @@ let queryText = '';
 let page = 1;
 
 form.addEventListener('submit', handleSubmit);
+btnMore.addEventListener('click', onLoadMore);
 
 async function handleSubmit(event) {
   event.preventDefault();
@@ -38,7 +39,7 @@ async function handleSubmit(event) {
 
   try {
     const res = await getImagesByQuery(queryText, page);
-    hideLoader();
+
     if (!res.hits.length) {
       iziToast.show({
         color: 'red',
@@ -52,7 +53,6 @@ async function handleSubmit(event) {
 
     if (page < res.totalHits / 15) {
       showLoadMoreButton();
-      btnMore.addEventListener('click', onLoadMore);
     } else {
       iziToast.show({
         color: 'blue',
@@ -63,6 +63,14 @@ async function handleSubmit(event) {
     }
   } catch (error) {
     console.log(error);
+    iziToast.show({
+      color: 'red',
+      message: `❌ Sorry, an error occurred. Please try again!`,
+      position: 'topRight',
+      maxWidth: '450px',
+    });
+  } finally {
+    hideLoader();
   }
 }
 
@@ -73,7 +81,7 @@ async function onLoadMore() {
 
   try {
     const data = await getImagesByQuery(queryText, page);
-    hideLoader();
+
     createGallery(data.hits);
 
     // scroll
@@ -87,7 +95,6 @@ async function onLoadMore() {
       left: 0,
       behavior: 'smooth',
     });
-    //
 
     if (page < data.totalHits / 15) {
       showLoadMoreButton();
@@ -101,5 +108,13 @@ async function onLoadMore() {
     }
   } catch (error) {
     console.log(error);
+    iziToast.show({
+      color: 'red',
+      message: `❌ Sorry, an error occurred. Please try again!`,
+      position: 'topRight',
+      maxWidth: '450px',
+    });
+  } finally {
+    hideLoader();
   }
 }
